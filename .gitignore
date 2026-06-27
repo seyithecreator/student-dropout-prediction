@@ -4,7 +4,6 @@ __pycache__/
 *.pyo
 data/students.csv
 data/attendance_sequences.npy
-models/*.joblib
-models/*.keras
+# models are committed — do not ignore them
 reports/
 .DS_Store
