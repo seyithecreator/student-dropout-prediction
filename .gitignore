@@ -5,5 +5,7 @@ __pycache__/
 data/students.csv
 data/attendance_sequences.npy
 # models are committed — do not ignore them
-reports/
+# reports: commit static training artefacts, ignore per-user scored output
+reports/risk_report.csv
+reports/risk_report.json
 .DS_Store
