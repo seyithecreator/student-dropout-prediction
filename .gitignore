@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+data/students.csv
+data/attendance_sequences.npy
+models/*.joblib
+models/*.keras
+reports/
+.DS_Store
