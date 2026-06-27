@@ -6,7 +6,6 @@ Models are trained offline with train.py and loaded at startup.
 import os, sys, json, base64
 from pathlib import Path
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ["PYTHONWARNINGS"] = "ignore"
 
 import numpy as np
@@ -24,7 +23,7 @@ RISK_CSV     = Path("reports/risk_report.csv")
 FIGURES      = Path("reports/figures")
 MODEL_PATHS  = {
     "ensemble":     Path("models/stacking_model.joblib"),
-    "lstm":         Path("models/lstm_attendance.keras"),
+    "lstm":         Path("models/lstm_weights.npz"),
     "preprocessor": Path("models/preprocessor.joblib"),
     "features":     Path("models/feature_names.joblib"),
 }
@@ -37,14 +36,14 @@ def load_models():
     if missing:
         return None, missing
 
-    import tensorflow as tf
     from models.ensemble_model import StackingDropoutModel
+    from models.lstm_attendance import load_weights
 
-    ensemble     = StackingDropoutModel.load(str(MODEL_PATHS["ensemble"]))
-    lstm_model   = tf.keras.models.load_model(str(MODEL_PATHS["lstm"]))
-    preprocessor = joblib.load(MODEL_PATHS["preprocessor"])
+    ensemble      = StackingDropoutModel.load(str(MODEL_PATHS["ensemble"]))
+    lstm_weights  = load_weights(str(MODEL_PATHS["lstm"]))
+    preprocessor  = joblib.load(MODEL_PATHS["preprocessor"])
     feature_names = joblib.load(MODEL_PATHS["features"])
-    return {"ensemble": ensemble, "lstm": lstm_model,
+    return {"ensemble": ensemble, "lstm": lstm_weights,
             "preprocessor": preprocessor, "feature_names": feature_names}, []
 
 

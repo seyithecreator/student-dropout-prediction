@@ -46,7 +46,7 @@ def main(csv_path: str, attendance_path: str):
     # ── 3. Train LSTM ─────────────────────────────────────────────────────────
     print("\n[3/8] Training LSTM attendance model...")
     from models.lstm_attendance import train as train_lstm, generate_features
-    lstm_model, lstm_metrics = train_lstm(
+    lstm_weights, lstm_metrics = train_lstm(
         data["X_seq_train"], data["y_seq_train"],
         data["X_seq_test"],  data["y_seq_test"],
     )
@@ -61,8 +61,8 @@ def main(csv_path: str, attendance_path: str):
     att_train = attendance_matrix[train_mask]
     att_test  = attendance_matrix[test_idx]
 
-    trend_train, lstm_p_train = generate_features(lstm_model, att_train)
-    trend_test,  lstm_p_test  = generate_features(lstm_model, att_test)
+    trend_train, lstm_p_train = generate_features(lstm_weights, att_train)
+    trend_test,  lstm_p_test  = generate_features(lstm_weights, att_test)
 
     X_train_aug = np.column_stack([data["X_train_unsmote"], trend_train, lstm_p_train])
     X_test_aug  = np.column_stack([data["X_test"],          trend_test,  lstm_p_test])
